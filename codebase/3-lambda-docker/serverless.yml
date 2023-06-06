@@ -1,0 +1,27 @@
+service: restaurants-app
+provider:
+  name: aws
+  stage: project
+  runtime: python3.9
+  architecture: arm64
+  region: us-east-1
+  ecr:
+    images:
+      querytxreceipts:
+        path: ./
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+          Resource:
+            - arn:aws:s3:::txrestaurantreceipts/*
+functions:
+  getreceipts:
+    image:
+      name: querytxreceipts
+    events:
+      - s3:
+          bucket: txrestaurantreceipts
+          event: s3:ObjectCreated:*

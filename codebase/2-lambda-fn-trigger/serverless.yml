@@ -1,0 +1,21 @@
+service: restaurants-app
+provider:
+  name: aws
+  runtime: python3.9
+  stage: project
+  region: us-east-1
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+          Resource:
+            - arn:aws:s3:::txrestaurantreceipts/*
+functions:
+  getreceipts:
+    handler: main.lambda_handler
+    events:
+      - s3:
+          bucket: txrestaurantreceipts
+          event: s3:ObjectCreated:*

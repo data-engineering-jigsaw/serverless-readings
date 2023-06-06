@@ -1,0 +1,15 @@
+service: restaurants-app
+provider:
+  name: aws
+  stage: project
+  runtime: python3.9
+  region: us-east-1
+functions:
+  txqueryfn:
+    handler: main.lambda_handler
+resources:
+  Resources:
+    S3Assets:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: txrestaurantreceipts
